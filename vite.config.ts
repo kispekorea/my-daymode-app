@@ -1,23 +1,24 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 import path from 'path';
+import {defineConfig, loadEnv} from 'vite';
 
-export default defineConfig({
-  // 1. 저장소 이름이 'daymode'가 맞다면 반드시 이대로!
-  base: '/daymode/', 
-  
-  plugins: [react(), tailwindcss()],
-  
-  resolve: {
-    alias: {
-      // 2. 경로 인식을 위해 필수
-      '@': path.resolve(__dirname, './src'),
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, '.', '');
+  return {
+    plugins: [react(), tailwindcss()],
+    define: {
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
-  },
-  
-  build: {
-    // 3. 빌드 결과물이 나올 폴더 이름 확인
-    outDir: 'dist',
-  }
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
+      },
+    },
+    server: {
+      // HMR is disabled in AI Studio via DISABLE_HMR env var.
+      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      hmr: process.env.DISABLE_HMR !== 'true',
+    },
+  };
 });
