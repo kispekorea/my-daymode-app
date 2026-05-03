@@ -36,7 +36,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F4F7F9] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#FAFCFF] via-[#F4F5F7] to-[#EDEDF1] flex items-center justify-center">
         <p className="text-slate-400 font-bold">로딩 중...</p>
       </div>
     );
@@ -47,9 +47,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F4F7F9] text-slate-800 selection:bg-[#E2E8F0]">
+    <div className="min-h-screen bg-gradient-to-br from-[#FAFCFF] via-[#F4F5F7] to-[#EDEDF1] text-slate-800 selection:bg-[#E2E8F0]">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#F4F7F9]/80 backdrop-blur-xl px-6 py-4 flex justify-between items-center border-b border-white/60 shadow-[0_2px_10px_rgba(0,0,0,0.02)] mb-4 lg:mb-8">
+      <header className="sticky top-0 z-10 bg-white/40 backdrop-blur-xl px-6 py-4 flex justify-between items-center border-b border-white/60 mb-4 lg:mb-8">
         <div className="flex items-center gap-2">
           {isEditingName ? (
             <div className="flex items-center gap-2">
@@ -91,7 +91,7 @@ export default function App() {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 w-full bg-[#F4F7F9]/90 backdrop-blur-xl border-t border-white/80 px-6 pt-3 pb-safe z-50 shadow-[0_-10px_30px_-10px_rgba(40,50,60,0.04)]">
+      <nav className="fixed bottom-0 w-full bg-white/60 backdrop-blur-xl border-t border-white/80 px-6 pt-3 pb-safe z-50">
         <div className="max-w-md mx-auto flex justify-between items-center">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -105,7 +105,7 @@ export default function App() {
                   {isActive && (
                     <motion.div
                       layoutId="active-nav-bg"
-                      className="absolute inset-0 bg-[#E8EDF2] rounded-full scale-[1.7]"
+                      className="absolute inset-0 bg-black/[0.03] rounded-full scale-[1.7]"
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     />
                   )}

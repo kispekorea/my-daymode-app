@@ -6,7 +6,7 @@ export default function LoginView() {
   const { login } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#F4F7F9] text-slate-800 flex items-center justify-center p-6 selection:bg-[#E2E8F0]">
+    <div className="min-h-screen bg-gradient-to-br from-[#FAFCFF] via-[#F4F5F7] to-[#EDEDF1] text-slate-800 flex items-center justify-center p-6 selection:bg-[#E2E8F0]">
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -16,7 +16,7 @@ export default function LoginView() {
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#E8EDF2]/50 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 mix-blend-multiply" />
 
         <div className="relative z-10">
-          <div className="w-16 h-16 bg-[#F4F7F9] rounded-2xl mx-auto flex items-center justify-center mb-6 border border-white shadow-sm">
+          <div className="w-16 h-16 bg-[#F8FAFC] rounded-2xl mx-auto flex items-center justify-center mb-6 border border-white shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
             <LogIn size={28} className="text-[#6B8A9E]" />
           </div>
           

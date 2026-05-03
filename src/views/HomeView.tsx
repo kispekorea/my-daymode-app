@@ -106,10 +106,14 @@ export default function HomeView() {
   }, [records, viewDateStr]);
 
   // Handle immediate save
-  const updateRecord = (updates: Partial<BodyStateRecord>) => {
+  const updateRecord = async (updates: Partial<BodyStateRecord>) => {
     const updated = { ...todayRecord, ...updates };
     setTodayRecord(updated);
-    updateItem(updated.id, updated);
+    try {
+      await updateItem(updated.id, updated);
+    } catch(err: any) {
+      alert("데이터 저장 실패: " + err?.message);
+    }
   };
 
   const formatDate = (dateStr: string) => {

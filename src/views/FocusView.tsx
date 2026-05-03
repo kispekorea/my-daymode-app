@@ -112,20 +112,25 @@ export default function FocusView() {
     setCurrentDate(d);
   };
 
-  const handleAdd = (e: React.FormEvent) => {
+  const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!goal.trim()) return;
 
-    if (editingId) {
-      updateItem(editingId, { goal: goal.trim() });
-      setEditingId(null);
-    } else {
-      const id = Date.now().toString();
-      updateItem(id, {
-        id,
-        date: dateStr,
-        goal: goal.trim()
-      });
+    try {
+      if (editingId) {
+        await updateItem(editingId, { goal: goal.trim() });
+        setEditingId(null);
+      } else {
+        const id = Date.now().toString();
+        await updateItem(id, {
+          id,
+          date: dateStr,
+          goal: goal.trim()
+        });
+      }
+    } catch(err: any) {
+      alert("데이터 저장 실패: " + err?.message);
+      return;
     }
     setGoal('');
   };

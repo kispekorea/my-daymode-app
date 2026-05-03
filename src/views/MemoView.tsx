@@ -17,6 +17,7 @@ export default function MemoView() {
   const { data: items, updateItem, deleteItem } = useFirestoreCollection<MemoItem>('memos');
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [date, setDate] = useState(() => {
     const offset = new Date().getTimezoneOffset() * 60000;
@@ -67,21 +68,26 @@ export default function MemoView() {
     mediaRecorderRef.current?.stream.getTracks().forEach(track => track.stop());
   };
 
-  const handleAdd = (e: React.FormEvent) => {
+  const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim() && !audioUrl) return;
 
-    if (editingId) {
-      updateItem(editingId, { date, title: '', content, audioUrl });
-    } else {
-      const id = Date.now().toString();
-      updateItem(id, {
-        id,
-        date,
-        title: '',
-        content,
-        audioUrl
-      });
+    try {
+      if (editingId) {
+        await updateItem(editingId, { date, title: '', content, audioUrl });
+      } else {
+        const id = Date.now().toString();
+        await updateItem(id, {
+          id,
+          date,
+          title: '',
+          content,
+          audioUrl
+        });
+      }
+    } catch (err: any) {
+      alert("데이터 저장 실패: " + err?.message);
+      return;
     }
     
     // Reset
@@ -182,8 +188,23 @@ export default function MemoView() {
         )}
       </AnimatePresence>
 
+      <div className="mb-6 relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg className="h-5 w-5 text-stone-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <input 
+          type="text" 
+          value={searchQuery} 
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="메모 검색..."
+          className="w-full bg-white border border-stone-200 shadow-sm rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-[#D0DDF0] focus:border-[#D0DDF0] outline-none transition-all"
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {items.map(item => (
+        {[...items].reverse().filter(item => (item.content || '').toLowerCase().includes(searchQuery.toLowerCase())).map(item => (
           editingId === item.id ? (
             <motion.div key={item.id} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white p-5 rounded-[20px] border border-[#D0DDF0] shadow-[0_4px_20px_rgba(0,0,0,0.05)] col-span-1 sm:col-span-2">
               <form onSubmit={handleAdd} className="space-y-3">
@@ -261,7 +282,7 @@ export default function MemoView() {
           </motion.div>
           )
         ))}
-        {items.length === 0 && (
+        {items.filter(item => (item.content || '').toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
            <div className="col-span-full text-center py-12 text-stone-400 text-sm font-medium">
              기록된 메모가 없습니다.
            </div>

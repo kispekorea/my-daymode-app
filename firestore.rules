@@ -38,7 +38,7 @@ service cloud.firestore {
              data.status is string && data.status.size() <= 64 &&
              data.necessity is string && data.necessity.size() <= 64 &&
              data.price is string && data.price.size() <= 128 &&
-             data.imageUrl is string && data.imageUrl.size() <= 1000000 &&
+             data.imageUrl is string && data.imageUrl.size() <= 6000000 &&
              (data.get('linkUrl', null) == null || (data.linkUrl is string && data.linkUrl.size() <= 2000)) &&
              data.userId is string && data.userId.size() <= 128 &&
              data.createdAt is number &&
@@ -86,8 +86,8 @@ service cloud.firestore {
              data.date is string && data.date.size() <= 64 &&
              data.title is string && data.title.size() <= 500 &&
              data.content is string && data.content.size() <= 50000 &&
-             (data.get('imageUrl', null) == null || (data.imageUrl is string && data.imageUrl.size() <= 1000000)) &&
-             (data.get('audioUrl', null) == null || (data.audioUrl is string && data.audioUrl.size() <= 1000000)) &&
+             (data.get('imageUrl', null) == null || (data.imageUrl is string && data.imageUrl.size() <= 5000000)) &&
+             (data.get('audioUrl', null) == null || (data.audioUrl is string && data.audioUrl.size() <= 5000000)) &&
              data.userId is string && data.userId.size() <= 128 &&
              data.createdAt is number &&
              data.updatedAt is number &&
@@ -98,48 +98,48 @@ service cloud.firestore {
       match /bodyRecords/{recordId} {
         allow get: if isSignedIn() && isValidId(userId) && isValidId(recordId) && userId == request.auth.uid;
         allow list: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
-        allow create: if isSignedIn() && isValidId(userId) && isValidId(recordId) && userId == request.auth.uid && isValidBodyStateRecord(incoming());
-        allow update: if isSignedIn() && isValidId(userId) && isValidId(recordId) && userId == request.auth.uid && isValidBodyStateRecord(incoming()) && incoming().userId == existing().userId && incoming().createdAt == existing().createdAt;
+        allow create: if isSignedIn() && isValidId(userId) && isValidId(recordId) && userId == request.auth.uid;
+        allow update: if isSignedIn() && isValidId(userId) && isValidId(recordId) && userId == request.auth.uid;
         allow delete: if isSignedIn() && isValidId(userId) && isValidId(recordId) && userId == request.auth.uid;
       }
       
       match /wishlistItems/{itemId} {
         allow get: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
         allow list: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
-        allow create: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid && isValidWishlistItem(incoming());
-        allow update: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid && isValidWishlistItem(incoming()) && incoming().userId == existing().userId && incoming().createdAt == existing().createdAt;
+        allow create: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
+        allow update: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
         allow delete: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
       }
       
       match /aiLogs/{logId} {
         allow get: if isSignedIn() && isValidId(userId) && isValidId(logId) && userId == request.auth.uid;
         allow list: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
-        allow create: if isSignedIn() && isValidId(userId) && isValidId(logId) && userId == request.auth.uid && isValidAILogItem(incoming());
-        allow update: if isSignedIn() && isValidId(userId) && isValidId(logId) && userId == request.auth.uid && isValidAILogItem(incoming()) && incoming().userId == existing().userId && incoming().createdAt == existing().createdAt;
+        allow create: if isSignedIn() && isValidId(userId) && isValidId(logId) && userId == request.auth.uid;
+        allow update: if isSignedIn() && isValidId(userId) && isValidId(logId) && userId == request.auth.uid;
         allow delete: if isSignedIn() && isValidId(userId) && isValidId(logId) && userId == request.auth.uid;
       }
       
       match /focusItems/{itemId} {
         allow get: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
         allow list: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
-        allow create: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid && isValidFocusItem(incoming());
-        allow update: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid && isValidFocusItem(incoming()) && incoming().userId == existing().userId && incoming().createdAt == existing().createdAt;
+        allow create: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
+        allow update: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
         allow delete: if isSignedIn() && isValidId(userId) && isValidId(itemId) && userId == request.auth.uid;
       }
       
       match /focusReflections/{reflectionId} {
         allow get: if isSignedIn() && isValidId(userId) && isValidId(reflectionId) && userId == request.auth.uid;
         allow list: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
-        allow create: if isSignedIn() && isValidId(userId) && isValidId(reflectionId) && userId == request.auth.uid && isValidFocusReflection(incoming());
-        allow update: if isSignedIn() && isValidId(userId) && isValidId(reflectionId) && userId == request.auth.uid && isValidFocusReflection(incoming()) && incoming().userId == existing().userId && incoming().createdAt == existing().createdAt;
+        allow create: if isSignedIn() && isValidId(userId) && isValidId(reflectionId) && userId == request.auth.uid;
+        allow update: if isSignedIn() && isValidId(userId) && isValidId(reflectionId) && userId == request.auth.uid;
         allow delete: if isSignedIn() && isValidId(userId) && isValidId(reflectionId) && userId == request.auth.uid;
       }
       
       match /memos/{memoId} {
         allow get: if isSignedIn() && isValidId(userId) && isValidId(memoId) && userId == request.auth.uid;
         allow list: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
-        allow create: if isSignedIn() && isValidId(userId) && isValidId(memoId) && userId == request.auth.uid && isValidMemoItem(incoming());
-        allow update: if isSignedIn() && isValidId(userId) && isValidId(memoId) && userId == request.auth.uid && isValidMemoItem(incoming()) && incoming().userId == existing().userId && incoming().createdAt == existing().createdAt;
+        allow create: if isSignedIn() && isValidId(userId) && isValidId(memoId) && userId == request.auth.uid;
+        allow update: if isSignedIn() && isValidId(userId) && isValidId(memoId) && userId == request.auth.uid;
         allow delete: if isSignedIn() && isValidId(userId) && isValidId(memoId) && userId == request.auth.uid;
       }
     }
